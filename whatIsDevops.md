@@ -3,6 +3,7 @@ DevOps is a tricky concept to explain, but here are some resources that do a dec
 
 * [What is DevOps? - In Simple English (video)](https://www.youtube.com/watch?v=_I94-tJlovg)
 * [DevOps the movement, or the function?](https://devops.com/blogs/devops-movement-function/)
+* [DevOps 101](http://slides.com/victoriaguido/devops-101#/)
 
 ## In-depth resources
 * [All Things Distributed](http://www.allthingsdistributed.com/) : Werner Vogels' weblog on building scalable and robust distributed systems.
