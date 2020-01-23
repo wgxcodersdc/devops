@@ -11,23 +11,34 @@ We encourage you to add your @handle with references, blog posts or even other r
 ![AWS Certification Path Image](https://imgur.com/L10j0rq.png)
 
 Foundational: 
-* AWS Certified Cloud Practitioner
+* [AWS Certified Cloud Practitioner](https://aws.amazon.com/training/path-cloudpractitioner/)
+  * Certification is a general overview of most AWS Resources, and basic principles of cloud infrastructure, and AWS' IAAS (Infrastructure As A Service), PAAS (Platform As A Service), and SAAS (Software As A Service) solutions.
 
 Associate:
-* AWS Developer Associate
-* AWS Solution Architect Associate
-* AWS SysOps Administration Associate
+* [AWS Developer Associate](https://aws.amazon.com/certification/certified-developer-associate/)
+  * This will prepare you to develop cloud native solutions using AWS infrastucture and platforms, as well as provide insight and best practices for migrating legacy apps to the cloud.
+* [AWS Solution Architect Associate](https://aws.amazon.com/certification/certified-solutions-architect-associate/)
+  * This will prepare you to present cloud native solutions to clients, and dives deep into how AWS services can be integrated together to form complete applications and environments.
+* [AWS SysOps Administration Associate](https://aws.amazon.com/certification/certified-sysops-admin-associate/)
+  * This will prepare you to operate an existing AWS environment, and deal with the challenges faced by maintaining highly available and fault tolerant applications.
 
 Professional:
-* AWS DevOps Engineer Professional
-* AWS Solutions Architect Professional
+* [AWS DevOps Engineer Professional](https://aws.amazon.com/certification/certified-devops-engineer-professional/)
+  * Next step from the Developer and SysOPs Associate, and will continue to dive further into developing solutions and managing them day to day. Covers using AWS tools to orchestrate Continuous  including AWS OpsWorks, and AWS CodePipeline.
+* [AWS Solutions Architect Professional](https://aws.amazon.com/certification/certified-solutions-architect-professional/)
+  * Next step from the Solutions Associate, and will prepare you to build the solutions you've presented to clients. This exam dives deep into the underlying technologies that make up many of AWS Managed solutions like Aurora.
 
-Specialties:
-* Security
-* Big Data
-* Advanced Networking
-* Alexa SKill Builder
-* Machine Learning
+Specialties - These exams slot in somewhere between the associate and professional level, and dig deep into specific technical domains.
+* [Security](https://aws.amazon.com/certification/certified-security-specialty/)
+  * Prepares you to create secure AWS Organizations, and modify existing environments to have a better security footprint. Focuses also on monitoring and alerting, to deal with security incidents, and prevent them from happening in the first place.
+* [Big Data](https://aws.amazon.com/certification/certified-big-data-specialty/)
+  * Prepares you to use AWS Big Data tools, and provide ETL, and reporting visualizations. This will cover in depth AWS Kinesis, RedShift, Athena, Hadoop and other solutions.
+* [Advanced Networking](https://aws.amazon.com/certification/certified-advanced-networking-specialty/)
+  * Dives deep into building performant network architectures, leveraging AWS Direct COnnect and PrivateLink to connect On-Premise data centers and AWS endpoints. Would recommend taking this if you already have experience with Networking, either Network+, or Cisco Certifications, as well as AWS Solution Architect or SysOps certification.
+* [Alexa SKill Builder](https://aws.amazon.com/certification/certified-alexa-skill-builder-specialty/)
+  * Dives into building Alexa skills, to integrate Alexa into your existing apps, and build and design new apps around Alexa.
+* [Machine Learning](https://aws.amazon.com/certification/certified-machine-learning-specialty/)
+  * Provides training on how to use AI and Machine Learning solutions inside of AWS. Focuses on Data Engineering, Exploratory Data Analysis, Modeling of Data, and implementing Machine Learning Operations.
   
 ## How can I study for AWS certs?
 ### 1. [Linux Academy](https://linuxacademy.com/)
