@@ -10,3 +10,13 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 
 ### [Get Started with Docker] (https://docs.docker.com/get-started/)
 Documentation from Docker with a basic Hello World
+
+## Continuous Integration
+
+### [Travis CI] (https://docs.travis-ci.com/user/tutorial/)
+
+## Clouds
+
+### [AWS Hands On Tutorials](https://aws.amazon.com/getting-started/hands-on/)
+
+### [Heroku] (https://devcenter.heroku.com/start)
