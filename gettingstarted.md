@@ -8,15 +8,16 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 
 ## Containers
 
-### [Get Started with Docker] (https://docs.docker.com/get-started/)
-Documentation from Docker with a basic Hello World
+* [Get Started with Docker] (https://docs.docker.com/get-started/)
+*
 
 ## Continuous Integration
 
-### [Travis CI] (https://docs.travis-ci.com/user/tutorial/)
+* [Travis CI] (https://docs.travis-ci.com/user/tutorial/)
+* [Circle CI] (https://circleci.com/docs/2.0/getting-started/)
 
 ## Clouds
 
-### [AWS Hands On Tutorials](https://aws.amazon.com/getting-started/hands-on/)
+* [AWS Hands On Tutorials](https://aws.amazon.com/getting-started/hands-on/)
 
-### [Heroku] (https://devcenter.heroku.com/start)
+* [Heroku] (https://devcenter.heroku.com/start)
