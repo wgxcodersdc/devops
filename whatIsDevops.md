@@ -8,6 +8,7 @@ DevOps is a tricky concept to explain, but here are some resources that do a dec
 ## In-depth resources
 * [All Things Distributed](http://www.allthingsdistributed.com/) : Werner Vogels' weblog on building scalable and robust distributed systems.
 * [12 Factor App](https://12factor.net/) : Ideal practices on building "software as a service" applications.
+* [US Digital Service Playbook](https://playbook.cio.gov/) : Plays for successful digital services
 
 ## Fun Articles
 These are articles that poke fun at certain aspects of the DevOps movement. _These articles express the views of their authors and do not necessarily represent the views of members within WWCDC or the WWCDC organization itself._
@@ -23,8 +24,7 @@ These are articles that poke fun at certain aspects of the DevOps movement. _The
 
 
 ## Related Meetups & Events
-* DevOps DC
-* DevOpsDays DC
-* DevOpsDays Baltimore
-* AWS Security
+* [DevOps DC](https://www.meetup.com/DevOpsDC/)
+* [DevOpsDays](https://devopsdays.org/) 
+* [AWS Security](https://www.meetup.com/AWS-Security/)
 * DataOps DC
