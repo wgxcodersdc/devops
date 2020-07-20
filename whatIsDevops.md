@@ -28,3 +28,5 @@ These are articles that poke fun at certain aspects of the DevOps movement. _The
 * [DevOpsDays](https://devopsdays.org/) 
 * [AWS Security](https://www.meetup.com/AWS-Security/)
 * DataOps DC
+
+[Get Started with DevOps](https://github.com/womenwhocodedc/devops/blob/master/gettingstarted.md)
