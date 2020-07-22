@@ -28,3 +28,6 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 
 ## Data Ops
 * [ML Flow](https://mlflow.org/)
+
+## DevOps Learning with Environment
+* [Katacoda](https://www.katacoda.com/)
