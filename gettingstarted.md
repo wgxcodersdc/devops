@@ -9,7 +9,9 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 ## Containers
 
 * [Get Started with Docker](https://docs.docker.com/get-started/)
-*
+
+## Kubernetes
+* [Kubernetes for MLOps](https://twimlai.com/kubernetes-ebook/)
 
 ## Continuous Integration
 
