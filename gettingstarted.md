@@ -25,6 +25,7 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 ## Git
 * [Github Markdown Cheat Sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
 * [Git Handbook](https://guides.github.com/introduction/git-handbook/)
+* [Git Multiple Repositories](https://www.perforce.com/blog/vcs/managing-multiple-git-repositories#:~:text=When%20to%20Use%20Multiple%20Git,only%20way%20to%20work%20efficiently)
 
 ## Data Ops
 * [ML Flow](https://mlflow.org/)
