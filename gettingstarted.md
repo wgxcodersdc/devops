@@ -3,7 +3,9 @@ List of resources for learning and getting started in DevOps
 ## Linux
 
 * [Linux Command Emulator](https://www.askvg.com/pc-emulator-test-and-learn-linux-commands-in-web-browser/)
-Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, find, help, ls, rm, su, time, vi, etc. right from your browser! No install required.
+    * Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, find, help, ls, rm, su, time, vi, etc. right from your browser! No install required.
+* [Learn Shell] (https://www.learnshell.org/)
+    * Another tool to train on the basics of Bash, the most common shell on Linux systems. Includes info on functions, and pipelines 
 
 
 ## Containers
@@ -18,8 +20,11 @@ Practice popular linux commands like cat, cd, chmod, chown, chroot, date, echo, 
 
 ## Continuous Integration
 
-* [Travis CI](https://docs.travis-ci.com/user/tutorial/)
+* [Github Actions](https://docs.github.com/en/actions)
+  * [Github Actions Lab](https://lab.github.com/githubtraining/github-actions:-hello-world)
+* [Jenkins](https://www.jenkins.io/doc/tutorials/)
 * [Circle CI](https://circleci.com/docs/2.0/getting-started/)
+* [Travis CI](https://docs.travis-ci.com/user/tutorial/)
 
 ## Clouds
 
