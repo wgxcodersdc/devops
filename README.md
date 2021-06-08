@@ -25,3 +25,9 @@ ___
 A container is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. Docker is a common, and Kubernetes and Openshift is used to manage a platform of containers.
 
 [Container Resources](https://github.com/womenwhocodedc/devops/blob/master/containers-resources.md)
+
+___
+
+## System Design Workshop
+
+Our ongoing [Summer 2021 System Design Workshop notes can be found here](SystemDesign_WorkshopAgenda.md).
