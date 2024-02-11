@@ -3,6 +3,8 @@ In this workshop we'll cover the basics of running a Kubernetes cluster, by sett
 Needed tools to have installed for this workshop
 * [Docker](https://docker.com)
 * [Minikube](https://minikube.sigs.k8s.io/)
+* [Kubectl](https://kubernetes.io/docs/reference/kubectl/)
+    * Kubectl is installed with Docker Desktop and doesn't need to be separately installed for this workshop
 ## Install Docker
 ### Windows
 [System Requirements can be viewed here.](https://docs.docker.com/desktop/install/windows-install/#system-requirements)
@@ -49,6 +51,7 @@ Needed tools to have installed for this workshop
        }`
 5. Validate it has been added to the PATH by typing `minikube version`
     * If Minikube was installed correctly you will get info back about the installation
+6. Close all powershell windows, and open a new winodw not as admin
 
 ### MacOS
 [System Requirements can be viewed here.](https://minikube.sigs.k8s.io/docs/start/#what-youll-need)
@@ -65,3 +68,11 @@ Needed tools to have installed for this workshop
         3. `sudo install minikube-darwin-arm64 /usr/local/bin/minikube`
 2. Validate it has been added to the PATH by typing `minikube version`
     * If Minikube was installed correctly you will get info back about the installation
+
+## Starting A Cluster
+* From a Powershell or Terminal window, type 
+    * `minikube start --kubernetes-version=1.29.1`
+* We'll now wait for a number of tools to validate and download, and the cluster to start
+* When it's finished and ready to use it will say `* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default`
+* We can validate that kubectl is configured, by typing `kubectl --context=minikube describe namespace default`
+
