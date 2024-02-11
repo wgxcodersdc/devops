@@ -1,5 +1,8 @@
 # Women Who Code DC - Cloud & DevOps - Winter 24 Kubernetes Workshop - Minikube
-In this workshop we'll cover the basics of running a Kubernetes cluster, by setting up a virtual environment on your computer. Instructions will be provided for Windows and MacOS. These instructions are valid as of February 2024
+In this workshop we'll cover the basics of running a Kubernetes cluster, by setting up a virtual environment on your computer. Instructions will be provided for Windows and MacOS. These instructions are valid as of February 2024.
+Needed tools to have installed for this workshop
+* [Docker](https://docker.com)
+* [Minikube](https://minikube.sigs.k8s.io/)
 ## Install Docker
 ### Windows
 [System Requirements can be viewed here.](https://docs.docker.com/desktop/install/windows-install/#system-requirements)
@@ -13,7 +16,7 @@ In this workshop we'll cover the basics of running a Kubernetes cluster, by sett
 5. When the installation is successful, select Close to complete the installation process.
 6. Start the Docker Desktop from your Programs menu
 7. Accept the license agreement.
-8. Open a command prompt, and type docker version and hit enter
+8. Open a [powershell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4#installing-the-msi-package) window, and type `docker version` and hit enter
     * If Docker was installed correctly you will get info back about the installation
 
 ### MacOS
@@ -26,8 +29,39 @@ In this workshop we'll cover the basics of running a Kubernetes cluster, by sett
 2. Double-click the Docker.dmg file that was downloaded, and drag the Docker app to the Applications folder.
 3. Run Docker Desktop from the Applications folder or Spotlight Search menu
 4. Accept the license agreement
-5. Open a terminal, and type docker version and hit enter
+5. Open a terminal, and type `docker version` and hit enter
     * If Docker was installed correctly you will get info back about the installation
 
 ## Install Minikube
 
+### Windows
+[System Requirements can be viewed here.](https://minikube.sigs.k8s.io/docs/start/#what-youll-need)
+[Full Instructions from Minikube](https://minikube.sigs.k8s.io/docs/start/)
+
+1. [Download the installer](https://storage.googleapis.com/minikube/releases/latest/minikube-installer.exe)
+2. Run the Installer
+3. Open a Powershell window as Admin
+    * Right-click on Powershell and choose Run As Administrator
+4. Add the minikube.exe to your Environment's PATH via the Powershell Window, by copying and pasting the following commands. Hit Enter after each one.
+    * `$oldPath = [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::Machine)`
+    * `if ($oldPath.Split(';') -inotcontains 'C:\minikube'){
+          [Environment]::SetEnvironmentVariable('Path', $('{0};C:\minikube' -f $oldPath), [EnvironmentVariableTarget]::Machine)
+       }`
+5. Validate it has been added to the PATH by typing `minikube version`
+    * If Minikube was installed correctly you will get info back about the installation
+
+### MacOS
+[System Requirements can be viewed here.](https://minikube.sigs.k8s.io/docs/start/#what-youll-need)
+[Full Instructions from Minikube](https://minikube.sigs.k8s.io/docs/start/)
+
+1. Download the installer
+    1. M1 or newer Macs with Apple Silicon
+        1. Open a terminal and install by copying and pasting the following commands. Hit Enter after each one.
+        2. `curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-arm64`
+        3. `sudo install minikube-darwin-arm64 /usr/local/bin/minikube`
+    2. [Intel Macs](https://desktop.docker.com/mac/main/amd64/Docker.dmg?)
+        1. Open a terminal and install by copying and pasting the following commands. Hit Enter after each one.
+        2. `curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64`
+        3. `sudo install minikube-darwin-arm64 /usr/local/bin/minikube`
+2. Validate it has been added to the PATH by typing `minikube version`
+    * If Minikube was installed correctly you will get info back about the installation
