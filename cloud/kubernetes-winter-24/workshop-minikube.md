@@ -76,3 +76,12 @@ Needed tools to have installed for this workshop
 * When it's finished and ready to use it will say `* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default`
 * We can validate that kubectl is configured, by typing `kubectl --context=minikube describe namespace default`
 
+## Cleanup
+To save resources as Docker and Minikube can use quite a lot make sure to stop and exit the apps after you're done testing them!
+### Minikube
+* Run `minikube stop` in your Terminal or Powershell window
+### Docker
+* Windows
+    * From the taskbar, right click and choose Stop
+* Mac
+    * From the File Menu, choose Quit
