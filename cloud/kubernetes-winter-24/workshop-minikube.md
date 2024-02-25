@@ -76,6 +76,33 @@ Needed tools to have installed for this workshop
 * When it's finished and ready to use it will say `* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default`
 * We can validate that kubectl is configured, by typing `kubectl --context=minikube describe namespace default`
 
+## Launching A Dashboard
+The Kubernetes open source project offers a free basic dashboard app, and the Minikube project offers a simplified install as part of it's features.
+* From a Powershell or Terminal window, type
+    * `minikube addons enable metrics-server`
+        * This will give us detailed metrics and telemetry to help us understand the system
+    * `minikube dashboard &`
+        * This tells minikube to start the dashboard and continue running it in the background by the use of the POSIX & command. Without the & the command will not allow you to type additional commands.
+* Now you can go to the URL provided by minikube, if it didn't open a browser. An example output for me was:
+    * `Opening http://127.0.0.1:65021/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...`
+* From here you can explore what's available to this and all Kubernetes clusters using ver 1.29!
+
+## Launching A Hello World application
+Now that we have a cluster, a dashboard to visualize our system, it's time to launch our first app. For this we'll use kubectl to interact with the kubernetes api.
+* From a Powershell or Terminal window, type
+    * `kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080`
+        * This creates a simple node.js app
+* You can now go back to your browser and see the deployment in the dashboard
+* We can explore this deployment's configuration, see how much cpu, ram and pod count it's setup to currently use
+* One thing we can't currently do is view the Hello Node app in our browser, let's fix that by creating a service and exposing it to localhost!
+* From a Powershell or Terminal window, type
+    * `kubectl expose deployment hello-node --type=LoadBalancer --port=8080`
+        * This creates and exposes a LoadBalancer object for the hello-node deployment to attach to
+    * `minikube service hello-node &`
+        * This will tell minikube to create a service hello-node and make it accessible to your computer, and automatically open a browser window with the application.
+* If you wanted to explore and see all services available you can run the following command
+    * `minikube service list`
+
 ## Cleanup
 To save resources as Docker and Minikube can use quite a lot make sure to stop and exit the apps after you're done testing them!
 ### Minikube
