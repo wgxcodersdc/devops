@@ -1,4 +1,4 @@
-# WWCode DC - System Design
+# WGXCode DC - System Design
 
 ## Workshop Series - Summer 2021
 ### Session #1 - Let's Talk System Design Pt 1

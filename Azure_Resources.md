@@ -1,7 +1,7 @@
 <!-- Created during the 2021 Spring Chillout session -->
 
 # Purpose:
-This document was created for WWC DC members who want to pursue Azure certifications and so that we can share references/experiences that can help others study for the exams. 
+This document was created for WGXC DC members who want to pursue Azure certifications and so that we can share references/experiences that can help others study for the exams. 
 
 We encourage you to add your @handle with references, blog posts or even other resources used during your training. 
 
