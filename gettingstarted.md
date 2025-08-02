@@ -15,7 +15,7 @@ List of resources for learning and getting started in DevOps
 ## Kubernetes
 * [Kubernetes for MLOps](https://twimlai.com/kubernetes-ebook/)
 
-* [WWC Container Resources](https://drive.google.com/drive/u/0/folders/1TiydoZmJGNJN_rmsOWug9umOl0z7ZLqc)
+* [WGXC Container Resources](https://drive.google.com/drive/u/0/folders/1TiydoZmJGNJN_rmsOWug9umOl0z7ZLqc)
 
 
 ## Continuous Integration

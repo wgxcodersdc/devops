@@ -1,15 +1,15 @@
 
-# DevOps @WWCDC
+# DevOps @WGXCDC
 At a high level, "devops" refers to a set of practices that emphasize the collaboration and communication of both software developers and information technology (IT) professionals while automating the process of software delivery and infrastructure changes. The word is literally "development" and "operations" combined together. Many more iterations exist of combining different elements like "security" into "devsecops".
 
-See links below for resources about DevOps from the #devops channel on WWCDC slack. 
+See links below for resources about DevOps from the #devops channel on WGXCDC slack. 
 
 ## How to Find Us
-[Join the Slack]( https://docs.google.com/forms/d/e/1FAIpQLSclKdiMvrKGi3RBemEM_c4h0QQQVuIrVYhNBQDrfX9jL4Bcxg/viewform)
+[Join the Slack](https://forms.gle/p6KYBpxSMoq3CvQU8)
 ___
 ## Devops 101
-* [What is DevOps?](https://github.com/womenwhocodedc/devops/blob/master/whatIsDevops.md)
-* [Getting Started in DevOps](https://github.com/womenwhocodedc/devops/blob/master/gettingstarted.md)
+* [What is DevOps?](whatIsDevops.md)
+* [Getting Started in DevOps](gettingstarted.md)
 
 ___
 ## Cloud Computing
@@ -24,7 +24,7 @@ ___
 ## Containers
 A container is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. Docker is a common, and Kubernetes and Openshift is used to manage a platform of containers.
 
-[Container Resources](https://github.com/womenwhocodedc/devops/blob/master/containers-resources.md)
+[Container Resources](containers-resources.md)
 
 ___
 

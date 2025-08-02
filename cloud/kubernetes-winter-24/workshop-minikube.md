@@ -1,4 +1,4 @@
-# Women Who Code DC - Cloud & DevOps - Winter 24 Kubernetes Workshop - Minikube
+# WGXC DC - Cloud & DevOps - Winter 24 Kubernetes Workshop - Minikube
 In this workshop we'll cover the basics of running a Kubernetes cluster, by setting up a virtual environment on your computer. Instructions will be provided for Windows and MacOS. These instructions are valid as of February 2024.
 Needed tools to have installed for this workshop
 * [Docker](https://docker.com)
