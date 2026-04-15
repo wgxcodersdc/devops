@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment with AI: Exploring Coding CLIs with Google Gemini — WGXC DC</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+
+  <style>
+    /* ===== WGXC DC Theme — #003380 / #e81b39 / Montserrat ===== */
+
+    .reveal {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 34px;
+      color: #333;
+      background: #fff;
+    }
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Montserrat', sans-serif;
+      color: #003380;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      text-shadow: none;
+      line-height: 1.2;
+      margin-bottom: 0.4em;
+    }
+    .reveal h1 { font-size: 1.9em; }
+    .reveal h2 { font-size: 1.3em; }
+    .reveal h3 { font-size: 1em; color: #555; font-weight: 600; }
+    .reveal p, .reveal li { color: #555; line-height: 1.6; }
+    .reveal ul { list-style: disc; padding-left: 1.2em; }
+    .reveal ul li { margin-bottom: 0.28em; }
+    .reveal a { color: #003380; }
+    .reveal a:hover { color: #e81b39; }
+    .reveal strong { color: #e81b39; }
+
+    /* Progress / controls */
+    .reveal .progress { background: rgba(0,51,128,0.12); }
+    .reveal .progress span { background: #e81b39; }
+    .reveal .controls { color: #003380; }
+    .reveal .slide-number {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68em;
+      background: rgba(0,51,128,0.08);
+      color: #003380;
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    /* Persistent corner logo */
+    .slide-logo {
+      position: fixed;
+      bottom: 14px; left: 18px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      opacity: 0.65;
+      z-index: 200;
+    }
+
+    /* ── Title card ── */
+    .reveal .slides section.title-card {
+      background: #003380;
+    }
+    .reveal .slides section.title-card h1,
+    .reveal .slides section.title-card p { color: #fff; }
+    .reveal .slides section.title-card .subtitle {
+      font-size: 0.52em;
+      font-weight: 500;
+      color: rgba(255,255,255,0.82);
+    }
+    .reveal .slides section.title-card .event-meta {
+      font-size: 0.4em;
+      color: rgba(255,255,255,0.58);
+      margin-top: 1.2em;
+    }
+    .title-accent {
+      display: block;
+      width: 52px; height: 4px;
+      background: #e81b39;
+      margin: 0.5em auto 0.85em;
+      border-radius: 2px;
+    }
+    .hero-logo {
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      margin-bottom: 0.75em;
+    }
+
+    /* ── Section intro ── */
+    .reveal .slides section.section-intro {
+      background: #f0f4fa;
+    }
+    .reveal .slides section.section-intro h2 { font-size: 1.65em; }
+    .section-label {
+      display: block;
+      font-size: 0.36em;
+      font-weight: 700;
+      color: #e81b39;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      margin-bottom: 0.4em;
+    }
+
+    /* ── Prompt slides ── */
+    .reveal .slides section.prompt-card-slide { background: #fdf2f3; }
+    .prompt-number-label {
+      display: block;
+      font-size: 0.36em;
+      font-weight: 700;
+      color: #e81b39;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      margin-bottom: 0.45em;
+    }
+    .prompt-box {
+      background: #fff;
+      border-left: 6px solid #e81b39;
+      border-radius: 0 8px 8px 0;
+      padding: 0.8em 1.25em;
+      text-align: left;
+      margin: 0.5em 0 0;
+      font-size: 0.58em;
+      color: #333;
+      line-height: 1.7;
+    }
+
+    /* ── Code blocks ── */
+    .reveal pre {
+      background: #1a1a2e;
+      border-radius: 8px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+      font-size: 0.53em;
+      line-height: 1.55;
+      margin: 0.45em auto;
+      width: 96%;
+    }
+    .reveal pre code {
+      padding: 1em 1.3em;
+      max-height: 370px;
+    }
+    .reveal code:not(pre code) {
+      background: #f0f4fa;
+      color: #003380;
+      padding: 0.08em 0.32em;
+      border-radius: 4px;
+      font-size: 0.8em;
+    }
+
+    /* ── Layouts ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8em;
+      text-align: left;
+      align-items: start;
+    }
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.3em;
+      text-align: left;
+    }
+
+    /* ── Components ── */
+    .callout {
+      background: #f0f4fa;
+      border-left: 5px solid #003380;
+      border-radius: 0 8px 8px 0;
+      padding: 0.65em 1em;
+      text-align: left;
+      font-size: 0.62em;
+      color: #333;
+      margin: 0.35em 0;
+      line-height: 1.6;
+    }
+    .callout.red { border-left-color: #e81b39; background: #fdf2f3; }
+    .callout.green { border-left-color: #1a6b3c; background: #f2faf5; }
+    .callout strong { color: #003380; }
+    .callout.red strong { color: #e81b39; }
+
+    .chip {
+      display: inline-block;
+      background: #003380;
+      color: #fff;
+      font-size: 0.4em;
+      padding: 0.28em 0.72em;
+      border-radius: 12px;
+      margin: 0.12em;
+      font-weight: 600;
+    }
+    .chip.red { background: #e81b39; }
+    .chip.outline {
+      background: transparent;
+      border: 2px solid #003380;
+      color: #003380;
+    }
+    .chip.green { background: #1a6b3c; }
+
+    .divider {
+      border: none;
+      border-top: 3px solid #e81b39;
+      width: 46px;
+      margin: 0.45em auto 0.65em;
+    }
+
+    /* ── Comparison panels ── */
+    .compare-panel {
+      background: #f0f4fa;
+      border-radius: 8px;
+      padding: 0.9em 1.1em;
+      font-size: 0.6em;
+      text-align: left;
+    }
+    .compare-panel h3 { color: #003380; font-size: 1.1em; margin-bottom: 0.4em; }
+    .compare-panel.right { background: #fdf2f3; }
+    .compare-panel.right h3 { color: #e81b39; }
+    .compare-panel ul { margin: 0; padding-left: 1.1em; }
+    .compare-panel li { margin-bottom: 0.28em; color: #444; }
+
+    /* ── ReAct diagram ── */
+    .react-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      margin: 0.7em 0;
+      flex-wrap: wrap;
+    }
+    .react-box {
+      background: #003380;
+      color: #fff;
+      padding: 0.55em 1.1em;
+      border-radius: 8px;
+      font-size: 0.58em;
+      font-weight: 700;
+      text-align: center;
+      min-width: 5em;
+    }
+    .react-box.red { background: #e81b39; }
+    .react-box.gray { background: #555; }
+    .react-box.green { background: #1a6b3c; }
+    .react-arrow { font-size: 1.1em; color: #003380; font-weight: 700; }
+
+    /* ── Token chips ── */
+    .token-row {
+      display: flex;
+      gap: 0.5em;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 0.6em 0;
+    }
+    .token-chip {
+      background: #003380;
+      color: #fff;
+      font-size: 0.52em;
+      padding: 0.35em 0.85em;
+      border-radius: 6px;
+      font-weight: 600;
+      position: relative;
+    }
+    .token-chip::after {
+      content: attr(data-n);
+      position: absolute;
+      top: -0.65em; right: -0.45em;
+      background: #e81b39;
+      color: #fff;
+      font-size: 0.72em;
+      width: 1.5em; height: 1.5em;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* ── Timeline ── */
+    .timeline { text-align: left; margin: 0 auto; max-width: 82%; }
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9em;
+      margin-bottom: 0.6em;
+      font-size: 0.6em;
+    }
+    .tl-dot {
+      width: 12px; height: 12px;
+      background: #e81b39;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.28em;
+    }
+    .tl-date {
+      font-weight: 700;
+      color: #003380;
+      min-width: 5.5em;
+    }
+
+    /* ── Stat callout ── */
+    .stat-big {
+      font-size: 2.6em;
+      font-weight: 800;
+      color: #e81b39;
+      display: block;
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.52em; color: #555; display: block; margin-top: 0.2em; }
+
+    /* ── Numbered steps ── */
+    ol.step-list {
+      counter-reset: steps;
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      font-size: 0.62em;
+      margin: 0;
+    }
+    ol.step-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 0.75em;
+      margin-bottom: 0.5em;
+      align-items: flex-start;
+      color: #333;
+    }
+    ol.step-list li::before {
+      content: counter(steps);
+      background: #003380;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.82em;
+      min-width: 1.9em; height: 1.9em;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Tables ── */
+    .reveal table {
+      font-size: 0.52em;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .reveal table th {
+      background: #003380;
+      color: #fff;
+      padding: 0.5em 0.75em;
+      text-align: left;
+    }
+    .reveal table td {
+      padding: 0.42em 0.75em;
+      border-bottom: 1px solid #e8e8e8;
+      color: #333;
+    }
+    .reveal table tr:nth-child(even) td { background: #f8f9fc; }
+    .reveal table .yes { color: #1a6b3c; font-weight: 700; }
+    .reveal table .limited { color: #7c4daf; font-weight: 600; }
+    .reveal table .no { color: #e81b39; font-weight: 600; }
+    .reveal table .hl td { background: #f0f4fa !important; font-weight: 600; }
+
+    /* ── MCP diagram ── */
+    .mcp-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6em;
+      font-size: 0.56em;
+      margin: 0.7em 0;
+    }
+    .mcp-node {
+      background: #003380;
+      color: #fff;
+      padding: 0.6em 1em;
+      border-radius: 8px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .mcp-node.red { background: #e81b39; }
+    .mcp-node.gray { background: #555; font-size: 0.9em; }
+    .mcp-arrow { font-size: 1.4em; color: #003380; font-weight: 700; }
+
+    /* ── Prompt anatomy ── */
+    .anatomy-block {
+      text-align: left;
+      font-size: 0.57em;
+      border: 2px solid #dde6f4;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0.4em auto;
+      width: 92%;
+    }
+    .anatomy-row { display: flex; align-items: stretch; }
+    .anatomy-label {
+      background: #003380;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88em;
+      padding: 0.55em 0.85em;
+      min-width: 7em;
+      display: flex;
+      align-items: center;
+    }
+    .anatomy-label.red { background: #e81b39; }
+    .anatomy-label.green { background: #1a6b3c; }
+    .anatomy-label.purple { background: #7c4daf; }
+    .anatomy-content {
+      padding: 0.55em 0.9em;
+      border-bottom: 1px solid #eef2fa;
+      color: #333;
+      flex: 1;
+      font-style: italic;
+    }
+    .anatomy-row:last-child .anatomy-content { border-bottom: none; }
+
+    /* ── Context comparison bar ── */
+    .ctx-bar-wrap { text-align: left; font-size: 0.58em; margin: 0.5em 0; }
+    .ctx-bar-label { display: inline-block; width: 9em; font-weight: 600; color: #333; }
+    .ctx-bar-track {
+      display: inline-block;
+      background: #e8eef8;
+      border-radius: 4px;
+      height: 1.1em;
+      vertical-align: middle;
+      width: 55%;
+      margin: 0 0.5em;
+      overflow: hidden;
+    }
+    .ctx-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: #003380;
+      display: inline-block;
+    }
+    .ctx-bar-fill.red { background: #e81b39; }
+    .ctx-bar-num { font-weight: 700; color: #003380; }
+    .ctx-bar-num.red { color: #e81b39; }
+
+    /* ── GEMINI.md code box ── */
+    .gemini-md {
+      background: #1a1a2e;
+      border-radius: 8px;
+      padding: 0.9em 1.3em;
+      text-align: left;
+      font-family: monospace;
+      font-size: 0.48em;
+      color: #a8d8a8;
+      line-height: 1.7;
+      margin: 0.4em auto;
+      width: 90%;
+    }
+    .gemini-md .md-h { color: #7cb4f4; font-weight: bold; }
+    .gemini-md .md-c { color: #5e7a5e; }
+
+    /* ── Privacy ── */
+    .privacy-note {
+      background: #fff8e1;
+      border-left: 5px solid #f9a825;
+      border-radius: 0 8px 8px 0;
+      padding: 0.65em 1em;
+      font-size: 0.56em;
+      text-align: left;
+      color: #555;
+      margin: 0.4em 0;
+    }
+
+    /* ── Resource card ── */
+    .resource-card {
+      background: #f0f4fa;
+      border-radius: 8px;
+      padding: 0.9em 1em;
+      font-size: 0.55em;
+      text-align: left;
+    }
+    .resource-card h3 { color: #003380; font-size: 1.1em; margin-bottom: 0.35em; }
+    .resource-card a { display: block; color: #003380; margin-bottom: 0.22em; font-size: 0.95em; }
+
+    /* ── Thank you ── */
+    .reveal .slides section.thankyou-slide { background: #f0f4fa; }
+    .tagline-big { font-size: 1.0em; font-weight: 700; color: #003380; margin: 0.3em 0 0.1em; }
+    .closing-q { font-size: 0.62em; font-weight: 600; color: #e81b39; margin-top: 0.9em; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<img class="slide-logo" src="assets/logo.png" alt="WGXC DC">
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ============================================================
+     SECTION 1 — WELCOME  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 1a Title -->
+  <section class="title-card" data-background-color="#003380">
+    <img class="hero-logo" src="assets/logo.png" alt="WGXC DC">
+    <h1>Experiment with AI</h1>
+    <span class="title-accent"></span>
+    <p class="subtitle">Exploring Coding CLIs with Google Gemini</p>
+    <p class="event-meta">Women and Gender eXpansive Coders DC &nbsp;·&nbsp; April 15, 2026 &nbsp;·&nbsp; Virtual</p>
+    <aside class="notes">Welcome! Tonight is hands-on — real terminal, real commands. If something breaks, that's fine, we debug together. Introduce yourself and any co-facilitators.</aside>
+  </section>
+
+  <!-- 1b Agenda -->
+  <section>
+    <span class="section-label">Tonight's Workshop</span>
+    <h2>Agenda</h2>
+    <hr class="divider">
+    <div class="two-col" style="font-size:0.62em; margin-top:0.4em;">
+      <div>
+        <p style="font-weight:700; color:#003380; margin-bottom:0.4em;">Concepts</p>
+        <ul style="font-size:0.9em;">
+          <li>What are Agentic CLIs?</li>
+          <li>Tokens, Prompts &amp; Context</li>
+          <li>CLIs + Your Computer</li>
+          <li>The Evolving Landscape</li>
+          <li>Installing Gemini CLI</li>
+          <li>— Intermission —</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-weight:700; color:#e81b39; margin-bottom:0.4em;">Hands-On</p>
+        <ul style="font-size:0.9em;">
+          <li>Live Demo: Gemini CLI</li>
+          <li><strong>Prompt 1</strong> — System Insights</li>
+          <li><strong>Prompt 2</strong> — GitHub Landing Page</li>
+          <li><strong>Prompt 3</strong> — Career Research</li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">Walk through the shape of the evening. The concept half builds the mental model; the hands-on half applies it immediately.</aside>
+  </section>
+
+  <!-- 1c Prerequisites -->
+  <section>
+    <span class="section-label">Before We Start</span>
+    <h2>Prerequisites Check</h2>
+    <hr class="divider">
+    <div class="three-col" style="margin-top:0.5em;">
+      <div class="callout">
+        <strong>Node.js 20+</strong><br>
+        <code>node --version</code><br>
+        <span style="font-size:0.85em;">Should show <code>v20.x</code> or higher</span>
+      </div>
+      <div class="callout">
+        <strong>Google Account</strong><br>
+        <span style="font-size:0.85em;">Any Gmail or Workspace account — Gemini CLI's free tier needs no credit card</span>
+      </div>
+      <div class="callout">
+        <strong>Gemini CLI</strong><br>
+        <code>gemini --version</code><br>
+        <span style="font-size:0.85em;">Install: <code>npm i -g @google/gemini-cli</code></span>
+      </div>
+    </div>
+    <p style="font-size:0.46em; margin-top:0.9em; color:#777;">Need help? See <a href="../gemini-install.md">gemini-install.md</a> in this repo or drop a message in chat.</p>
+    <aside class="notes">Ask everyone to run all three commands right now. Identify who needs help before moving on — hands-on success depends on everyone having a working CLI.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 2 — WHAT ARE AGENTIC CLIs?  (4 slides)
+============================================================ -->
+<section>
+
+  <!-- 2a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 01</span>
+    <h2>What are Agentic CLIs?</h2>
+    <aside class="notes">This section builds the foundational mental model. The key shift: you stop writing every instruction and start declaring outcomes.</aside>
+  </section>
+
+  <!-- 2b Generative vs Agentic -->
+  <section>
+    <h2>Generative AI vs. Agentic AI</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div class="compare-panel">
+        <h3>Generative AI</h3>
+        <ul>
+          <li>You ask → it answers</li>
+          <li>Produces content: text, code, images</li>
+          <li>Stateless — forgets between sessions</li>
+          <li>No ability to act on your environment</li>
+          <li>Example: ChatGPT web chat, Gemini.google.com</li>
+        </ul>
+      </div>
+      <div class="compare-panel right">
+        <h3>Agentic AI</h3>
+        <ul>
+          <li>You declare a goal → it figures out the steps</li>
+          <li>Plans, executes, observes, corrects</li>
+          <li>Uses <strong>tools</strong>: files, shell, web, APIs</li>
+          <li>Recovers from errors autonomously</li>
+          <li>Example: Gemini CLI, Claude Code, Aider</li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">The key distinction: generative AI produces content; agentic AI uses that content to take actions. You are now a director giving outcomes, not a typist giving instructions.</aside>
+  </section>
+
+  <!-- 2c How agents think -->
+  <section>
+    <h2>How an Agent Actually Works</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.6em;">Under the hood, every agentic CLI follows the same basic loop:</p>
+    <div class="react-flow">
+      <div class="react-box">Think<br><span style="font-weight:400;font-size:0.85em;">"What do I need to do?"</span></div>
+      <div class="react-arrow">→</div>
+      <div class="react-box red">Do<br><span style="font-weight:400;font-size:0.85em;">Use a tool</span></div>
+      <div class="react-arrow">→</div>
+      <div class="react-box gray">Check<br><span style="font-weight:400;font-size:0.85em;">"Did that work?"</span></div>
+      <div class="react-arrow">→</div>
+      <div class="react-box green">Repeat<br><span style="font-weight:400;font-size:0.85em;">Until done</span></div>
+    </div>
+    <div class="callout" style="max-width:85%; margin:0.6em auto; font-size:0.6em; text-align:center;">
+      This is why it can <strong>fix its own mistakes</strong> — it sees the error, thinks about what went wrong, and tries a different approach. No human needed in the loop.
+    </div>
+    <p style="font-size:0.52em; color:#555; margin-top:0.5em;">Example: <em>"Set up a Node project with tests"</em> → creates files → runs tests → sees a failure → reads the error → fixes it → runs again ✓</p>
+    <aside class="notes">Keep this light — you don't need to name the loop. The key idea is that the agent isn't just generating text, it's taking real actions and responding to what actually happens.</aside>
+  </section>
+
+  <!-- 2d Key players -->
+  <section>
+    <h2>The Agentic CLI Ecosystem</h2>
+    <hr class="divider">
+    <div class="three-col" style="margin-top:0.4em;">
+      <div class="callout red">
+        <strong>Gemini CLI</strong><br>
+        Google · Apache 2.0 · Free tier<br>
+        1M token context · Node.js
+      </div>
+      <div class="callout">
+        <strong>Claude Code</strong><br>
+        Anthropic · Proprietary<br>
+        Deep IDE integration · Pay-per-use
+      </div>
+      <div class="callout">
+        <strong>GitHub Copilot CLI</strong><br>
+        Microsoft/GitHub · Proprietary<br>
+        GA Feb 2026 · Copilot subscribers
+      </div>
+      <div class="callout">
+        <strong>Aider</strong><br>
+        Independent · Apache 2.0<br>
+        Model-agnostic · Git-native edits
+      </div>
+      <div class="callout">
+        <strong>Cursor CLI</strong><br>
+        Cursor · Proprietary<br>
+        Editor-first · Jan 2026
+      </div>
+    </div>
+    <aside class="notes">New tools are arriving every few months. We chose Gemini CLI because everyone in this room can use it for free, right now. Open source means you can audit the code.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 3 — TOKENS, PROMPTS & CONTEXT  (5 slides)
+============================================================ -->
+<section>
+
+  <!-- 3a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 02</span>
+    <h2>Tokens, Prompts &amp; Context Engineering</h2>
+    <aside class="notes">Three concepts that unlock better results from any AI tool — not just Gemini CLI.</aside>
+  </section>
+
+  <!-- 3b What is a token -->
+  <section>
+    <h2>What is a Token?</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">Think of tokens as the AI's unit of reading and writing — roughly one word per token.</p>
+    <div class="token-row" style="margin:0.6em 0 0.5em;">
+      <div class="token-chip" data-n="1">The</div>
+      <div class="token-chip" data-n="2">quick</div>
+      <div class="token-chip" data-n="3">brown</div>
+      <div class="token-chip" data-n="4">fox</div>
+    </div>
+    <div class="two-col" style="margin-top:0.4em;">
+      <div class="callout">
+        <strong>Why tokens matter</strong><br>
+        Every word you type in your prompt uses tokens. Every word the AI writes back uses tokens. There's a limit to how many can fit in one conversation — that limit is the <em>context window</em>.
+      </div>
+      <div class="callout">
+        <strong>Real-world sizes</strong><br>
+        A tweet ≈ 23 tokens<br>
+        A full page of text ≈ 350 tokens<br>
+        This entire slide deck ≈ ~5,000 tokens<br>
+        Gemini's window: <strong>1,000,000 tokens</strong>
+      </div>
+    </div>
+    <aside class="notes">Don't get into the weeds of tokenization here — the important concept is that there's a "memory limit" to each conversation, and Gemini's is unusually large.</aside>
+  </section>
+
+  <!-- 3c Context windows -->
+  <section>
+    <h2>The Context Window</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">The context window is the AI's working memory — how much it can "see" at once in a single conversation.</p>
+    <div class="ctx-bar-wrap" style="max-width:85%; margin:0.5em auto 0.4em;">
+      <div style="margin-bottom:0.55em;">
+        <span class="ctx-bar-label">Gemini (ours!)</span>
+        <span class="ctx-bar-track"><span class="ctx-bar-fill red" style="width:100%;"></span></span>
+        <span class="ctx-bar-num red">1,000,000 tokens</span>
+      </div>
+      <div style="margin-bottom:0.55em;">
+        <span class="ctx-bar-label">Claude</span>
+        <span class="ctx-bar-track"><span class="ctx-bar-fill" style="width:20%;"></span></span>
+        <span class="ctx-bar-num">200,000 tokens</span>
+      </div>
+      <div>
+        <span class="ctx-bar-label">ChatGPT</span>
+        <span class="ctx-bar-track"><span class="ctx-bar-fill" style="width:12.8%; background:#555;"></span></span>
+        <span class="ctx-bar-num" style="color:#555;">128,000 tokens</span>
+      </div>
+    </div>
+    <div class="callout red" style="max-width:88%; margin:0.5em auto; font-size:0.56em; text-align:center;">
+      Gemini's 1M token window fits: 7–9 novels · an entire codebase · a year of team messages — all in one conversation
+    </div>
+    <p style="font-size:0.5em; color:#777; margin-top:0.4em;">The bigger the window, the more context you can give it — and the better the results.</p>
+    <aside class="notes">The practical upside for tonight: you can paste your entire resume, your LinkedIn, multiple job descriptions, all at once. No need to worry about it "forgetting" earlier parts of the conversation.</aside>
+  </section>
+
+  <!-- 3d Anatomy of a good prompt -->
+  <section>
+    <h2>How to Write a Good Prompt</h2>
+    <hr class="divider">
+    <p style="font-size:0.54em; color:#555; margin-bottom:0.45em;">The more context you give, the better the output. A vague ask gets a vague answer.</p>
+    <div class="anatomy-block">
+      <div class="anatomy-row">
+        <div class="anatomy-label">Role</div>
+        <div class="anatomy-content">"You are a friendly career coach who gives direct, practical advice…"</div>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-label red">Context</div>
+        <div class="anatomy-content">"I have 5 years in project management and am transitioning into tech. Here is my resume summary…"</div>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-label green">Task</div>
+        <div class="anatomy-content">"Rewrite my LinkedIn headline to highlight my technical skills."</div>
+      </div>
+      <div class="anatomy-row">
+        <div class="anatomy-label purple">Constraints</div>
+        <div class="anatomy-content">"Keep it under 220 characters. Don't use buzzwords like 'passionate' or 'ninja'."</div>
+      </div>
+    </div>
+    <aside class="notes">Use a non-code example here to keep it accessible. The key lesson: Context is the most important part — most people skip it and wonder why they get generic results.</aside>
+  </section>
+
+  <!-- 3e GEMINI.md -->
+  <section>
+    <h2>Your Cheat Sheet for Gemini: GEMINI.md</h2>
+    <hr class="divider">
+    <div class="two-col">
+      <div>
+        <p style="font-size:0.56em; color:#555; margin-bottom:0.4em;">Create a file called <code>GEMINI.md</code> in your project folder. Gemini reads it automatically every time you start a session — so you don't have to re-explain yourself.</p>
+        <div class="callout" style="margin-bottom:0.4em; font-size:0.56em;">
+          <strong>Think of it like a sticky note on your desk</strong> — "here's what I'm working on, here's how I like things done."
+        </div>
+        <div class="callout green" style="font-size:0.56em;">
+          Takes 5 minutes to write. Saves you from explaining the same things on every prompt.
+        </div>
+      </div>
+      <div>
+        <div class="gemini-md">
+          <span class="md-h"># What I'm working on</span><br>
+          Personal portfolio website.<br>
+          Plain HTML and CSS, no frameworks.<br><br>
+          <span class="md-h"># My preferences</span><br>
+          - Keep things simple and readable<br>
+          - Mobile-friendly designs<br>
+          - Explain what you changed and why<br><br>
+          <span class="md-h"># Don't touch</span><br>
+          <span class="md-c"># Leave the header section alone</span><br>
+          <span class="md-c"># Don't add JavaScript</span>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">This is a really practical tip that people can use tonight. Encourage everyone to create one for their landing page project before they start Prompt 2.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 4 — CLIs CAN ACCESS YOUR COMPUTER  (4 slides)
+============================================================ -->
+<section>
+
+  <!-- 4a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 03</span>
+    <h2>CLIs Can Access Your Computer</h2>
+    <aside class="notes">This is the part that surprises most people. The CLI isn't just answering questions — it's taking actions on your machine.</aside>
+  </section>
+
+  <!-- 4b Built-in tools -->
+  <section>
+    <h2>What Gemini CLI Can Do</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Read &amp; write your files</strong><br>
+          It can open, create, edit, and save files on your computer — not just suggest changes for you to copy-paste.
+        </div>
+        <div class="callout">
+          <strong>Run terminal commands</strong><br>
+          <em>"Run my tests and fix anything that fails."</em> It runs the command, reads the output, and tries again if something goes wrong.
+        </div>
+      </div>
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Search the web</strong><br>
+          Google Search is built in. <em>"Find the current salary range for this role in DC"</em> — it looks it up live.
+        </div>
+        <div class="callout">
+          <strong>Control a browser</strong> <span class="chip" style="font-size:0.7em;">New!</span><br>
+          Can open Chrome, navigate pages, click buttons, fill in forms — all from a text instruction.
+        </div>
+      </div>
+    </div>
+    <aside class="notes">The "it actually writes the file" moment is usually where people's jaws drop. Emphasize that this isn't autocomplete — it's taking real actions on your machine.</aside>
+  </section>
+
+  <!-- 4c MCP -->
+  <section>
+    <h2>Connecting to Your Other Tools</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">Gemini CLI can plug into the tools you already use — through a standard called <strong>MCP</strong> (think of it as a universal adapter, like USB-C for AI).</p>
+    <div class="mcp-flow" style="margin: 0.5em 0 0.7em;">
+      <div class="mcp-node">Gemini CLI</div>
+      <div class="mcp-arrow">⇄</div>
+      <div class="mcp-node red">Adapter</div>
+      <div class="mcp-arrow">⇄</div>
+      <div class="mcp-node gray">GitHub</div>
+      <div class="mcp-node gray">Google Drive</div>
+      <div class="mcp-node gray">Slack</div>
+    </div>
+    <div class="three-col" style="font-size:0.9em;">
+      <div class="callout"><strong>GitHub</strong><br><em>"Open a pull request for my changes"</em> — from the terminal, in plain English</div>
+      <div class="callout"><strong>Google Drive</strong><br><em>"Summarize the documents in this folder"</em> — without opening a browser</div>
+      <div class="callout"><strong>Slack / Jira</strong><br><em>"Create a ticket for this bug I just found"</em> — straight from your code session</div>
+    </div>
+    <aside class="notes">MCP launched in Nov 2024 and was quickly adopted across the industry. The "USB-C" analogy lands well — one standard, works with everything. You don't need to set this up tonight, but it's good to know it exists.</aside>
+  </section>
+
+  <!-- 4d Safety -->
+  <section>
+    <h2>A Quick Word on Safety</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">Because Gemini CLI can actually do things on your computer, it's worth knowing a few basics:</p>
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <div class="callout red" style="margin-bottom:0.4em;">
+          <strong>It will ask before doing things</strong><br>
+          By default, Gemini asks for your approval before writing or deleting any file. Read those prompts — they tell you exactly what it's about to do.
+        </div>
+        <div class="callout red">
+          <strong>Don't paste passwords or private keys</strong><br>
+          Your prompts are sent to Google's servers. Stick to things you'd be okay sharing publicly.
+        </div>
+      </div>
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>It protects sensitive files</strong><br>
+          Gemini automatically avoids files that contain secrets like API keys. It's designed to be cautious by default.
+        </div>
+        <div class="callout green">
+          <strong>Tonight is safe</strong><br>
+          We're reading files and creating new ones only — nothing gets deleted or overwritten.
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Frame this as empowering, not scary. The approval prompts are actually a great learning tool — they show you exactly what an agentic CLI is doing step by step.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 5 — THE EVOLVING LANDSCAPE  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 5a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 04</span>
+    <h2>The Evolving Landscape</h2>
+    <aside class="notes">Set the pace and context — this space is moving faster than anyone can track individually. Experimenting together is how you keep up.</aside>
+  </section>
+
+  <!-- 5b Timeline -->
+  <section>
+    <h2>This Space Barely Existed 2 Years Ago</h2>
+    <hr class="divider">
+    <div style="text-align:center; margin-bottom:0.5em;">
+      <span class="stat-big">&lt; 2 yrs</span>
+      <span class="stat-label">from first open-source agentic CLI to a crowded, fast-moving ecosystem</span>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Jun 2023</span><span><strong>Aider</strong> — first widely-used agentic CLI, open source, git-native edits</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Nov 2024</span><span><strong>MCP</strong> — Anthropic releases Model Context Protocol; Google, Microsoft adopt it within months</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Jun 2025</span><span><strong>Gemini CLI</strong> — Google, Apache 2.0, Node.js, 1M token context, free tier</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Sep 2025</span><span><strong>GitHub Copilot CLI</strong> — public preview; multi-model routing to Anthropic, Google, OpenAI</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Oct 2025</span><span><strong>Claude Code</strong> — Anthropic, generally available, deep IDE integration</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Jan 2026</span><span><strong>Cursor CLI</strong> — editor-native workflow, plan mode before build</span></div>
+      <div class="timeline-item"><div class="tl-dot"></div><span class="tl-date">Feb 2026</span><span><strong>GitHub Copilot CLI</strong> — generally available to all Copilot subscribers</span></div>
+    </div>
+    <aside class="notes">Nobody can fully keep up with this pace — not researchers, not practitioners. Being in a room like this, experimenting with the tools, IS how you stay current. You don't need to master all of them — understand the concepts and the tools become interchangeable.</aside>
+  </section>
+
+  <!-- 5c Comparison table -->
+  <section>
+    <h2>Tool Comparison</h2>
+    <hr class="divider">
+    <table style="margin-top:0.3em;">
+      <thead>
+        <tr><th>Tool</th><th>License</th><th>Free Tier</th><th>Context Window</th><th>Standout Feature</th></tr>
+      </thead>
+      <tbody>
+        <tr class="hl">
+          <td><strong>Gemini CLI</strong></td>
+          <td>Apache 2.0</td>
+          <td class="yes">Yes · 1K req/day</td>
+          <td class="yes">1M tokens</td>
+          <td>Largest free context; open source</td>
+        </tr>
+        <tr>
+          <td>Claude Code</td>
+          <td>Proprietary</td>
+          <td class="no">No</td>
+          <td>200K tokens</td>
+          <td>Best overall code quality (2026 benchmarks)</td>
+        </tr>
+        <tr>
+          <td>Copilot CLI</td>
+          <td>Proprietary</td>
+          <td class="limited">Copilot plan</td>
+          <td>Varies by model</td>
+          <td>GitHub-native; multi-model routing</td>
+        </tr>
+        <tr>
+          <td>Aider</td>
+          <td>Apache 2.0</td>
+          <td class="limited">Model-dependent</td>
+          <td>Model-dependent</td>
+          <td>Git-native edits; 100+ languages; self-host</td>
+        </tr>
+        <tr>
+          <td>Cursor CLI</td>
+          <td>Proprietary</td>
+          <td class="limited">Trial only</td>
+          <td>N/A</td>
+          <td>Editor-first; plan-before-build mode</td>
+        </tr>
+      </tbody>
+    </table>
+    <aside class="notes">The free-tier column is why we're here tonight. Gemini CLI lets every person in this room experiment without a credit card. The Apache 2.0 license means you can fork it, self-host it, and audit exactly what it sends to Google.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 6 — INSTALLING  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 6a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 05 · Let's Get Set Up</span>
+    <h2>Installing Gemini CLI</h2>
+    <aside class="notes">Pause here and make sure everyone is following along. This is the most important prerequisite for the hands-on section — don't rush past it.</aside>
+  </section>
+
+  <!-- 6b Node.js -->
+  <section>
+    <h2>Step 1 — Install Node.js</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">Gemini CLI runs on Node.js — a free tool that lets you run JavaScript on your computer. You need version 20 or higher.</p>
+    <div class="three-col" style="margin-top:0.4em;">
+      <div class="callout">
+        <strong>Mac</strong><br>
+        <code>brew install node</code><br>
+        <span style="font-size:0.85em; color:#777;">No Homebrew? Download the .pkg installer from nodejs.org</span>
+      </div>
+      <div class="callout">
+        <strong>Windows</strong><br>
+        <code>choco install nodejs</code><br>
+        <span style="font-size:0.85em; color:#777;">No Chocolatey? Download the .msi installer from nodejs.org</span>
+      </div>
+      <div class="callout">
+        <strong>Linux</strong><br>
+        <code style="font-size:0.82em;">curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -</code><br>
+        <code>sudo apt-get install -y nodejs</code>
+      </div>
+    </div>
+    <div class="callout green" style="max-width:85%; margin:0.6em auto; font-size:0.56em; text-align:center;">
+      Check it worked: <code>node --version</code> should print <code>v20.x</code> or higher
+    </div>
+    <aside class="notes">Give people a few minutes here. Drop the nodejs.org link in chat. Helpers should jump into breakout rooms or DMs for anyone stuck.</aside>
+  </section>
+
+  <!-- 6c Gemini CLI install -->
+  <section>
+    <h2>Step 2 — Install Gemini CLI</h2>
+    <hr class="divider">
+    <p style="font-size:0.55em; color:#555; margin-bottom:0.5em;">Once Node.js is installed, one command gets you Gemini CLI on any platform:</p>
+    <pre><code class="language-bash" data-trim data-noescape>
+npm install -g @google/gemini-cli
+    </code></pre>
+    <div class="two-col" style="margin-top:0.5em;">
+      <div class="callout">
+        <strong>Check it worked</strong><br>
+        <code>gemini --version</code><br>
+        <span style="font-size:0.85em; color:#777;">You should see a version number like <code>0.37.0</code></span>
+      </div>
+      <div class="callout green">
+        <strong>First run</strong><br>
+        Type <code>gemini</code> and hit Enter. A browser tab will open asking you to sign in with Google — that's it, you're in!
+      </div>
+    </div>
+    <p style="font-size:0.46em; color:#777; margin-top:0.6em;">Need help? Full platform-by-platform guide: <a href="../gemini-install.md">gemini-install.md</a> in this repo</p>
+    <aside class="notes">Walk through this live on screen. The npm install usually takes 30–60 seconds. While it runs, ask people to get their Google account ready in a browser tab.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     INTERMISSION
+============================================================ -->
+<section>
+
+  <section data-background-color="#003380">
+    <img src="assets/logo.png" alt="WGXC DC" style="width:72px;height:72px;border-radius:50%;margin-bottom:0.6em;opacity:0.9;">
+    <h1 style="color:#fff; font-size:2.2em;">Intermission</h1>
+    <span class="title-accent"></span>
+    <p style="color:rgba(255,255,255,0.75); font-size:0.55em; margin-top:0.2em;">Take a breath · stretch · grab a drink</p>
+    <div style="margin-top:1.2em;">
+      <div class="callout" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); max-width:60%; margin:0 auto; text-align:center; color:#fff; font-size:0.52em;">
+        When we come back: <strong style="color:#e81b39;">Live Demo + 3 Hands-On Prompts</strong><br>
+        Make sure Gemini CLI is installed and you're signed in ✓
+      </div>
+    </div>
+    <aside class="notes">Natural break point — good time to check in with anyone who had install trouble. Before resuming, do a quick show of hands: who has `gemini --version` working?</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 7 — LIVE DEMO: GEMINI CLI  (4 slides)
+============================================================ -->
+<section>
+
+  <!-- 7a Section intro -->
+  <section class="section-intro">
+    <span class="section-label">Section 06 · Live Demo</span>
+    <h2>Gemini CLI in Action</h2>
+    <aside class="notes">Switch to terminal now. Narrate every command before running it. Pause after each output to explain what the model did and why. Make tool calls visible — don't hide the inner workings.</aside>
+  </section>
+
+  <!-- 6b First launch -->
+  <section>
+    <h2>Getting Started</h2>
+    <hr class="divider">
+    <div class="two-col">
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Step 1: type <code>gemini</code></strong><br>
+          A browser tab opens asking you to sign in with Google. That's it — no API key, no credit card.
+        </div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Step 2: start chatting</strong><br>
+          You're now in an interactive session. Type naturally — it's a conversation, not a command.
+        </div>
+        <div class="callout">
+          <strong>Free tier</strong><br>
+          1,000 requests per day. More than enough for learning and experimentation.
+        </div>
+      </div>
+      <pre><code class="language-bash" data-trim data-noescape>
+# Start Gemini (opens browser sign-in)
+gemini
+
+# Ask it something directly
+gemini "What files are in this directory?"
+
+# Give it a file to look at
+gemini -f ./my-resume.txt "Summarize this"
+
+# Ask it to do something
+gemini "Create a simple HTML page
+        that says hello world"
+      </code></pre>
+    </div>
+    <aside class="notes">Walk through this live. Emphasise that it feels like texting or chatting with someone, not writing code. The -f flag for attaching files is the most important thing to learn tonight.</aside>
+  </section>
+
+  <!-- 6c Useful commands -->
+  <section>
+    <h2>Handy Commands to Know</h2>
+    <hr class="divider">
+    <div class="three-col" style="margin-top:0.4em;">
+      <div class="callout">
+        <strong><code>/tools</code></strong><br>
+        Shows everything Gemini can do in this session — great for exploring its capabilities
+      </div>
+      <div class="callout">
+        <strong><code>/stats</code></strong><br>
+        Shows how much of your conversation budget you've used so far
+      </div>
+      <div class="callout">
+        <strong><code>/quit</code></strong><br>
+        Exit the session (or just press Ctrl+D)
+      </div>
+    </div>
+    <div class="callout" style="margin-top:0.5em; max-width:88%; margin-left:auto; margin-right:auto; font-size:0.58em;">
+      <strong>Pro tip:</strong> You can also use Gemini without the interactive session — just type <code>gemini "your question here"</code> and get an answer directly in the terminal.
+    </div>
+    <p style="font-size:0.44em; color:#777; margin-top:0.5em;">Screenshot this slide to reference during the hands-on exercises →</p>
+    <aside class="notes">Keep this simple — three commands is enough. The /tools command is especially nice because it shows participants what the agent can actually do without having to read docs.</aside>
+  </section>
+
+  <!-- 6d Tips for better results -->
+  <section>
+    <h2>Tips for Getting Great Results</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Be specific</strong><br>
+          Instead of <em>"improve my resume"</em> → <em>"rewrite my summary to emphasize leadership experience and target product manager roles"</em>
+        </div>
+        <div class="callout">
+          <strong>Give it something to work with</strong><br>
+          Paste in your text, attach a file, or describe your situation. The more context, the better the output.
+        </div>
+      </div>
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Tell it what to avoid</strong><br>
+          <em>"Don't use corporate jargon"</em> or <em>"keep it under 3 sentences"</em> — constraints make answers more useful.
+        </div>
+        <div class="callout">
+          <strong>Iterate, don't perfect</strong><br>
+          The first response is a starting point. Ask follow-up questions just like you would with a person.
+        </div>
+      </div>
+    </div>
+    <aside class="notes">These tips apply to any AI tool, not just Gemini CLI. Reinforce that this is a conversation — you wouldn't ask a human colleague one vague question and expect a perfect answer.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 7 — PROMPT 1: SYSTEM INSIGHTS  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 7a What + why -->
+  <section>
+    <span class="section-label">Hands-On · Prompt 1 of 3</span>
+    <h2>System Insights</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div class="callout" style="font-size:0.6em;">
+        <strong>What happens</strong><br>
+        Gemini will actually look around your computer — checking what software is installed, spotting your projects, and giving you personalised recommendations. It's not guessing; it's genuinely looking.
+      </div>
+      <div class="callout green" style="font-size:0.6em;">
+        <strong>Why start here</strong><br>
+        It's a great first prompt because you can fact-check the output yourself. You'll also get to watch it "think out loud" as it explores your machine.
+      </div>
+    </div>
+    <p style="font-size:0.5em; color:#555; margin-top:0.7em;">Before you run it — what do you think it'll find? Take a guess. Compare after.</p>
+    <aside class="notes">The "think out loud" observation is the key teaching moment — participants will see tool calls appearing in the output, which makes the agentic loop concrete and visible.</aside>
+  </section>
+
+  <!-- 7b Prompt template -->
+  <section class="prompt-card-slide">
+    <span class="prompt-number-label">Prompt 1 of 3</span>
+    <h2>System Insights</h2>
+    <div class="prompt-box">
+      "Look at my development environment and tell me:<br>
+      1. What languages and tools are installed, with exact version numbers<br>
+      2. What projects or repositories do you see in my home directory<br>
+      3. What would you recommend I update or clean up?<br><br>
+      Be specific about versions and file paths."
+    </div>
+    <p style="font-size:0.45em; color:#777; margin-top:0.6em;">Variation: add <code>-f ~/.zshrc</code> or <code>-f ~/.bashrc</code> to include your shell config in the context</p>
+    <aside class="notes">This prompt uses the file system and shell tools — watch the tool calls in output. The more specific you ask it to be, the more it has to actually inspect (vs. make up answers).</aside>
+  </section>
+
+  <!-- 7c Discussion -->
+  <section>
+    <h2>Reflect &amp; Refine</h2>
+    <hr class="divider">
+    <div style="max-width:85%; margin:0.4em auto;">
+      <div class="callout" style="margin-bottom:0.45em;">
+        <strong>What surprised you?</strong><br>
+        Did it find tools or projects you'd forgotten? Did it miss anything obvious?
+      </div>
+      <div class="callout" style="margin-bottom:0.45em;">
+        <strong>Context engineering question</strong><br>
+        What would you add to a GEMINI.md to make this kind of analysis run better every time?
+      </div>
+      <div class="callout">
+        <strong>Try a follow-up</strong><br>
+        <em>"Now show me the git log for the most active project you found and summarize what's been happening."</em>
+      </div>
+    </div>
+    <aside class="notes">5 minutes of reflection. The key insight: output quality = context quality. If Gemini missed something, it's usually because it couldn't see it — not because it couldn't reason about it.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 8 — PROMPT 2: GITHUB LANDING PAGE  (4 slides)
+============================================================ -->
+<section>
+
+  <!-- 8a What + why -->
+  <section>
+    <span class="section-label">Hands-On · Prompt 2 of 3</span>
+    <h2>GitHub Landing Page</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div class="callout" style="font-size:0.6em;">
+        <strong>What this builds</strong><br>
+        A complete <code>index.html</code> personal site — deployable to GitHub Pages in under 2 minutes. No frameworks, no build step, just HTML and inline CSS.
+      </div>
+      <div class="callout green" style="font-size:0.6em;">
+        <strong>Why GitHub Pages</strong><br>
+        Free hosting, custom domain support, deploys on push. A <code>username.github.io</code> URL you can put on a resume or send to a recruiter tonight.
+      </div>
+    </div>
+    <p style="font-size:0.5em; color:#555; margin-top:0.65em;">Open LinkedIn now and copy your <strong>About section</strong>. No LinkedIn? Write 3–4 sentences describing yourself — that's enough context.</p>
+    <aside class="notes">The "inline CSS, no dependencies" constraint is intentional — GitHub Pages is static, no build tooling. This constraint also forces simpler, more maintainable output.</aside>
+  </section>
+
+  <!-- 8b Prompt template -->
+  <section class="prompt-card-slide">
+    <span class="prompt-number-label">Prompt 2 of 3</span>
+    <h2>GitHub Landing Page</h2>
+    <div class="prompt-box">
+      "Create a personal landing page for GitHub Pages based on this LinkedIn profile summary:<br><br>
+      [PASTE YOUR LINKEDIN ABOUT SECTION HERE]<br><br>
+      Requirements:<br>
+      - Single index.html file with all CSS inline (no external stylesheets)<br>
+      - Mobile-responsive, works without JavaScript<br>
+      - Include: name, professional tagline, top skills, and contact links<br>
+      - Professional but approachable tone<br>
+      - Save the file to index.html in the current directory"
+    </div>
+    <aside class="notes">The "save the file" instruction at the end triggers Gemini to actually write to disk, not just print the HTML. This is the difference between a generative and an agentic interaction.</aside>
+  </section>
+
+  <!-- 8c Deploy steps -->
+  <section>
+    <h2>Deploy to GitHub Pages</h2>
+    <hr class="divider">
+    <ol class="step-list" style="max-width:82%; margin:0.5em auto 0;">
+      <li>Create a new repo named exactly <code>yourusername.github.io</code></li>
+      <li>Gemini writes <code>index.html</code> directly to your working directory</li>
+      <li>Commit and push to the <code>main</code> branch</li>
+      <li>Go to repo <strong>Settings → Pages</strong> → Source: main, root folder</li>
+      <li>Visit <code>https://yourusername.github.io</code> — live in ~60 seconds</li>
+    </ol>
+    <div class="callout" style="margin-top:0.6em; max-width:82%; margin-left:auto; margin-right:auto; font-size:0.55em;">
+      Stuck on git? Ask Gemini: <em>"Walk me through pushing this file to GitHub for the first time"</em>
+    </div>
+    <aside class="notes">Steps 3–5 take under 2 minutes. Encourage everyone to share their live URL in chat. This is a concrete, shareable output people can send to recruiters tonight.</aside>
+  </section>
+
+  <!-- 8d Iteration -->
+  <section>
+    <h2>Keep Iterating</h2>
+    <hr class="divider">
+    <p style="font-size:0.56em; color:#555; margin-bottom:0.4em;">The first output is a starting point. The real skill is knowing how to refine.</p>
+    <pre><code class="language-text" data-trim data-noescape>
+"Add a projects section with 3 placeholder cards:
+ title, description, tech stack chips, and a GitHub link"
+
+"Change the color scheme to use #003380 for headings
+ and #e81b39 for buttons and accents"
+
+"Display the skills as pill badges instead of a bullet list,
+ grouped by category"
+
+"Add a dark mode using prefers-color-scheme media query"
+
+"Make the header sticky and add a smooth-scroll anchor nav"
+    </code></pre>
+    <p style="font-size:0.46em; color:#777; margin-top:0.4em;">Each follow-up is a new context engineering exercise — be specific, state constraints, reference the existing code.</p>
+    <aside class="notes">Model the iteration cycle — this is the core daily workflow of AI-assisted development. Natural language refinement is faster than manual CSS editing for most tasks here. Encourage 2–3 rounds.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 9 — PROMPT 3: CAREER RESEARCH  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 9a What + why -->
+  <section>
+    <span class="section-label">Hands-On · Prompt 3 of 3</span>
+    <h2>Career Research &amp; Profile Review</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div class="callout" style="font-size:0.6em;">
+        <strong>What this does</strong><br>
+        Gemini uses its web search tool to research real job postings, cross-references your profile against actual role requirements, and produces specific, actionable recommendations — not generic advice.
+      </div>
+      <div class="callout red" style="font-size:0.6em;">
+        <strong>Where the 1M context window helps</strong><br>
+        You can paste your entire resume, full LinkedIn About, and specific job postings all at once. The model reasons across everything together — no summarization loss.
+      </div>
+    </div>
+    <p style="font-size:0.5em; color:#555; margin-top:0.65em;">Prepare: copy your LinkedIn About section + a 2–3 sentence resume summary. Full resume optional.</p>
+    <aside class="notes">This prompt benefits most from specificity. Vague "software engineer" input gets vague output. The more concrete the profile, the more targeted the role research and suggestions.</aside>
+  </section>
+
+  <!-- 9b Prompt template -->
+  <section class="prompt-card-slide">
+    <span class="prompt-number-label">Prompt 3 of 3</span>
+    <h2>Career Research &amp; Profile Review</h2>
+    <div class="prompt-box">
+      "I'll share my LinkedIn profile and resume summary. Please:<br>
+      1. Identify 5 specific job titles I should be targeting based on my background<br>
+      2. For each title, name 3 companies in DC or fully remote that are actively hiring<br>
+      3. List my top 3 skills gaps relative to those roles<br>
+      4. Suggest 2 specific, concrete improvements to my LinkedIn headline<br>
+      5. Suggest 2 specific improvements to my resume summary section<br><br>
+      Use web search to find current job postings.<br><br>
+      LinkedIn About: [PASTE HERE]<br>
+      Resume summary: [PASTE HERE]"
+    </div>
+    <aside class="notes">The "use web search" instruction activates Gemini's search tool — it will pull real job postings rather than reasoning from training data. This is where the agentic loop becomes visible and valuable.</aside>
+  </section>
+
+  <!-- 9c Privacy + variations -->
+  <section>
+    <h2>Privacy &amp; Variations</h2>
+    <hr class="divider">
+    <div class="privacy-note" style="max-width:88%; margin:0.3em auto 0.6em;">
+      <strong>Privacy:</strong> Prompt text is sent to Google's API. Use public LinkedIn info and resume summaries. Never paste passwords, compensation details, employer-confidential data, or SSNs.
+    </div>
+    <div class="two-col">
+      <div class="callout" style="font-size:0.58em;">
+        <strong>Target a specific company</strong><br>
+        <em>"Focus exclusively on roles at [Company]. What do their JDs emphasize that I should surface in my profile?"</em>
+      </div>
+      <div class="callout" style="font-size:0.58em;">
+        <strong>Interview prep</strong><br>
+        <em>"Generate 5 behavioral interview questions for a Senior DevOps Engineer role and help me draft STAR-format answers."</em>
+      </div>
+      <div class="callout" style="font-size:0.58em; margin-top:0.35em;">
+        <strong>Salary research</strong><br>
+        <em>"Search Levels.fyi and LinkedIn Salary for the compensation range for these roles in the DC metro area."</em>
+      </div>
+      <div class="callout" style="font-size:0.58em; margin-top:0.35em;">
+        <strong>Full resume</strong><br>
+        Add <code>-f ./resume.pdf</code> (or paste as text) for deeper analysis across your complete work history.
+      </div>
+    </div>
+    <aside class="notes">Address privacy directly — it always comes up. The context window is sent per-request to Google's servers. Start with public info; escalate to more detail once you're comfortable. For salary data, asking Gemini to search Levels.fyi is more reliable than its training data.</aside>
+  </section>
+
+</section>
+
+<!-- ============================================================
+     SECTION 10 — RESOURCES & CLOSE  (3 slides)
+============================================================ -->
+<section>
+
+  <!-- 10a Key takeaways -->
+  <section>
+    <span class="section-label">Section 07</span>
+    <h2>Key Takeaways</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Agentic ≠ Autocomplete</strong><br>
+          ReAct loops, tool use, and error recovery are fundamentally different from chat or tab completion.
+        </div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>Context is the skill</strong><br>
+          Prompt quality differences drive 76-point accuracy gaps. GEMINI.md is your persistent context investment.
+        </div>
+        <div class="callout">
+          <strong>Free tier is real</strong><br>
+          1,000 requests/day, 1M token context, open source. You can start experimenting tonight.
+        </div>
+      </div>
+      <div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>The space is < 2 years old</strong><br>
+          Claude Code launched Oct 2025. Gemini CLI launched Jun 2025. You are early.
+        </div>
+        <div class="callout" style="margin-bottom:0.4em;">
+          <strong>MCP is the integration layer</strong><br>
+          16,000+ servers. Connect your CLI to GitHub, databases, Slack — without writing glue code.
+        </div>
+        <div class="callout">
+          <strong>Iterate, don't perfect</strong><br>
+          The first output is a starting point. The value is in the conversation, not the first response.
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Reinforce the key mental models before closing. These are the ideas that transfer across tools as the ecosystem continues to change.</aside>
+  </section>
+
+  <!-- How this deck was built -->
+  <section>
+    <span class="section-label">Meta · This Deck Was Built With AI</span>
+    <h2>How This Presentation Was Made</h2>
+    <hr class="divider">
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <div class="callout" style="margin-bottom:0.4em; font-size:0.58em;">
+          <strong>Tools used</strong><br>
+          <span class="chip red" style="margin-bottom:0.3em;">Claude Code</span>
+          <span class="chip" style="margin-bottom:0.3em;">Reveal.js</span>
+          <span class="chip outline" style="margin-bottom:0.3em;">WGXC brand assets</span><br><br>
+          The entire slide deck — content, layout, CSS, and speaker notes — was built through a conversation with <strong>Claude</strong> in the terminal, using the WGXC site's existing logos and brand colors from <a href="https://wgxcodersdc.org">wgxcodersdc.org</a>.
+        </div>
+        <div class="callout green" style="font-size:0.58em;">
+          <strong>Curated by Camille Clayton</strong><br>
+          Workshop structure, content direction, prompt refinement, and all editorial decisions — the AI was the builder, the human was the architect.
+        </div>
+      </div>
+      <div>
+        <p style="font-size:0.5em; font-weight:700; color:#003380; margin-bottom:0.35em;">Prompts that shaped this deck:</p>
+        <div class="prompt-box" style="font-size:0.5em; margin-bottom:0.4em;">
+          <em>"Can you use reveal.js to build a slide deck, use the wgxc styles and assets from the github repo… frame out a 2 hour workshop covering gemini, agentic CLIs, tokens, prompts and context engineering…"</em>
+        </div>
+        <div class="prompt-box" style="font-size:0.5em; margin-bottom:0.4em;">
+          <em>"Remove times altogether, there should be content and multiple slides per section. Research each topic and provide a succinct slide for each. Max 40 slides."</em>
+        </div>
+        <div class="prompt-box" style="font-size:0.5em;">
+          <em>"Simplify the more technical slides. Friendly and casual where possible."</em>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">This slide is a meta moment — the deck they've been watching was itself built using the techniques you just taught. Let that land. Camille directed every iteration; Claude built it. That's the human+AI workflow in action.</aside>
+  </section>
+
+  <!-- 10b Resources -->
+  <section>
+    <h2>Resources</h2>
+    <hr class="divider">
+    <div class="three-col" style="margin-top:0.4em;">
+      <div class="resource-card">
+        <h3>Gemini CLI</h3>
+        <a href="https://github.com/google-gemini/gemini-cli">github.com/google-gemini/gemini-cli</a>
+        <a href="https://geminicli.com/docs/get-started/installation/">geminicli.com/docs</a>
+        <span class="chip" style="margin-top:0.3em;">Apache 2.0</span>
+        <span class="chip red">v0.37.0</span>
+      </div>
+      <div class="resource-card">
+        <h3>Tonight's Repo</h3>
+        <a href="https://github.com/wgxcodersdc/devops/tree/wgxc-april25-gemini">wgxcodersdc/devops</a>
+        <a href="../gemini-install.md">gemini-install.md</a>
+        <span style="display:block; font-size:0.88em; color:#777; margin-top:0.3em;">Install guide for all platforms</span>
+      </div>
+      <div class="resource-card">
+        <h3>WGXC DC</h3>
+        <a href="https://www.meetup.com/women-and-gender-expansive-coders-dc-wgxc-dc/">Meetup</a>
+        <a href="https://github.com/wgxcodersdc">GitHub</a>
+        <span style="display:block; font-size:0.88em; color:#777; margin-top:0.3em;">Join the Slack · #devops · #ai</span>
+      </div>
+    </div>
+    <div style="margin-top:0.6em; text-align:center;">
+      <span class="chip outline">MCP spec — modelcontextprotocol.io</span>
+      <span class="chip outline">ReAct paper — arxiv.org/abs/2210.03629</span>
+      <span class="chip outline">aider.chat</span>
+      <span class="chip outline">nodejs.org/en/download</span>
+    </div>
+    <aside class="notes">Share the GitHub repo URL in chat. The install guide covers all platforms for people who want to set up later or help others. The Slack channels are the best place for continued conversation after tonight.</aside>
+  </section>
+
+  <!-- 10c Thank you -->
+  <section class="thankyou-slide">
+    <img src="assets/logo.png" alt="WGXC DC" style="width:86px;height:86px;border-radius:50%;margin-bottom:0.5em;">
+    <p class="tagline-big">Code. Connect. Grow.</p>
+    <hr class="divider">
+    <h2>Thank You!</h2>
+    <p style="font-size:0.5em; color:#555; margin-top:0.4em;">
+      Meetup &nbsp;·&nbsp; LinkedIn &nbsp;·&nbsp; GitHub &nbsp;·&nbsp; Bluesky<br>
+      <strong>@wgxcodersdc</strong>
+    </p>
+    <p class="closing-q">What will you build this week?</p>
+    <aside class="notes">Close with the forward-looking question — not "great job" but "what comes next." Invite people to share builds in WGXC channels. Thank co-facilitators, helpers, everyone who showed up to experiment together.</aside>
+  </section>
+
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/zoom/zoom.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    center: true,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+    plugins: [ RevealNotes, RevealHighlight, RevealZoom ]
+  });
+</script>
+</body>
+</html>
