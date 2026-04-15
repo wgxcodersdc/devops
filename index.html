@@ -543,7 +543,7 @@
   </section>
 
   <!-- 1c Mission statement -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Who We Are</span>
     <h2>Our Mission</h2>
     <hr class="divider">
@@ -628,7 +628,7 @@
 <section>
 
   <!-- 2a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 01</span>
     <h2>What are Agentic CLIs?</h2>
     <aside class="notes">This section builds the foundational mental model. The key shift: you stop writing every instruction and start declaring outcomes.</aside>
@@ -688,12 +688,10 @@
   <section>
     <h2>The Agentic CLI Ecosystem</h2>
     <hr class="divider">
-    <div class="three-col" style="margin-top:0.4em;">
-      <div class="callout red">
-        <strong>Gemini CLI</strong><br>
-        Google · Apache 2.0 · Free tier<br>
-        1M token context · Node.js
-      </div>
+    <div class="callout red" style="margin-bottom:0.5em; font-size:0.62em; text-align:center;">
+      <strong>Gemini CLI</strong> — Google · Apache 2.0 · Free tier · 1M token context · <em>What we're using tonight</em>
+    </div>
+    <div class="two-col" style="margin-top:0;">
       <div class="callout">
         <strong>Claude Code</strong><br>
         Anthropic · Proprietary<br>
@@ -726,9 +724,9 @@
 <section>
 
   <!-- 3a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 02</span>
-    <h2>Tokens, Prompts &amp; Context Engineering</h2>
+    <h2>Tokens, Prompts &amp; Context</h2>
     <aside class="notes">Three concepts that unlock better results from any AI tool — not just Gemini CLI.</aside>
   </section>
 
@@ -854,7 +852,7 @@
 <section>
 
   <!-- 4a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 03</span>
     <h2>CLIs Can Access Your Computer</h2>
     <aside class="notes">This is the part that surprises most people. The CLI isn't just answering questions — it's taking actions on your machine.</aside>
@@ -949,7 +947,7 @@
 <section>
 
   <!-- 5a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 04</span>
     <h2>The Evolving Landscape</h2>
     <aside class="notes">Set the pace and context — this space is moving faster than anyone can track individually. Experimenting together is how you keep up.</aside>
@@ -1032,7 +1030,7 @@
 <section>
 
   <!-- 6a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 05 · Let's Get Set Up</span>
     <h2>Installing Gemini CLI</h2>
     <aside class="notes">Pause here and make sure everyone is following along. This is the most important prerequisite for the hands-on section — don't rush past it.</aside>
@@ -1118,7 +1116,7 @@ npm install -g @google/gemini-cli
 <section>
 
   <!-- 7a Section intro -->
-  <section class="section-intro">
+  <section class="section-intro" data-background-color="#f0f4fa">
     <span class="section-label">Section 06 · Live Demo</span>
     <h2>Gemini CLI in Action</h2>
     <aside class="notes">Switch to terminal now. Narrate every command before running it. Pause after each output to explain what the model did and why. Make tool calls visible — don't hide the inner workings.</aside>
@@ -1252,12 +1250,12 @@ gemini "Create a simple HTML page
     <span class="section-label">Hands-On · Prompt 1 of 3</span>
     <h2>System Insights</h2>
     <hr class="divider">
-    <div class="two-col" style="margin-top:0.3em;">
-      <div class="callout" style="font-size:0.6em;">
+    <div style="max-width:82%; margin:0.4em auto 0;">
+      <div class="callout" style="font-size:0.62em; margin-bottom:0.5em;">
         <strong>What happens</strong><br>
         Gemini will actually look around your computer — checking what software is installed, spotting your projects, and giving you personalised recommendations. It's not guessing; it's genuinely looking.
       </div>
-      <div class="callout red" style="font-size:0.6em;">
+      <div class="callout red" style="font-size:0.62em;">
         <strong>Why start here</strong><br>
         It's a great first prompt because you can fact-check the output yourself. You'll also get to watch it "think out loud" as it explores your machine.
       </div>
@@ -1314,12 +1312,12 @@ gemini "Create a simple HTML page
     <span class="section-label">Hands-On · Prompt 2 of 3</span>
     <h2>GitHub Landing Page</h2>
     <hr class="divider">
-    <div class="two-col" style="margin-top:0.3em;">
-      <div class="callout" style="font-size:0.6em;">
+    <div style="max-width:82%; margin:0.4em auto 0;">
+      <div class="callout" style="font-size:0.62em; margin-bottom:0.5em;">
         <strong>What this builds</strong><br>
         A complete <code>index.html</code> personal site — deployable to GitHub Pages in under 2 minutes. No frameworks, no build step, just HTML and inline CSS.
       </div>
-      <div class="callout red" style="font-size:0.6em;">
+      <div class="callout red" style="font-size:0.62em;">
         <strong>Why GitHub Pages</strong><br>
         Free hosting, custom domain support, deploys on push. A <code>username.github.io</code> URL you can put on a resume or send to a recruiter tonight.
       </div>
@@ -1397,12 +1395,12 @@ gemini "Create a simple HTML page
     <span class="section-label">Hands-On · Prompt 3 of 3</span>
     <h2>Career Research &amp; Profile Review</h2>
     <hr class="divider">
-    <div class="two-col" style="margin-top:0.3em;">
-      <div class="callout" style="font-size:0.6em;">
+    <div style="max-width:82%; margin:0.4em auto 0;">
+      <div class="callout" style="font-size:0.62em; margin-bottom:0.5em;">
         <strong>What this does</strong><br>
         Gemini uses its web search tool to research real job postings, cross-references your profile against actual role requirements, and produces specific, actionable recommendations — not generic advice.
       </div>
-      <div class="callout red" style="font-size:0.6em;">
+      <div class="callout red" style="font-size:0.62em;">
         <strong>Where the 1M context window helps</strong><br>
         You can paste your entire resume, full LinkedIn About, and specific job postings all at once. The model reasons across everything together — no summarization loss.
       </div>
@@ -1572,7 +1570,7 @@ gemini "Create a simple HTML page
   </section>
 
   <!-- 10c Thank you -->
-  <section class="thankyou-slide">
+  <section class="thankyou-slide" data-background-color="#f0f4fa">
     <img src="assets/logo.png" alt="WGXC DC" style="width:86px;height:86px;border-radius:50%;margin-bottom:0.5em;">
     <p class="tagline-big">Code. Connect. Grow.</p>
     <hr class="divider">
