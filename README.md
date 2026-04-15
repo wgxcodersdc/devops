@@ -1,4 +1,3 @@
-
 # DevOps @WGXCDC
 At a high level, "devops" refers to a set of practices that emphasize the collaboration and communication of both software developers and information technology (IT) professionals while automating the process of software delivery and infrastructure changes. The word is literally "development" and "operations" combined together. Many more iterations exist of combining different elements like "security" into "devsecops".
 
@@ -31,3 +30,13 @@ ___
 ## System Design Workshop
 
 Our ongoing [Summer 2021 System Design Workshop notes can be found here](SystemDesign_WorkshopAgenda.md).
+
+___
+
+## AI Workshop — Exploring Coding CLIs with Google Gemini
+
+**April 15, 2026 | Virtual**
+
+Hands-on workshop exploring AI-powered software development through the Google Gemini CLI — live demo, breakout rooms, and collaborative app building.
+
+[Event Page](https://www.meetup.com/women-and-gender-expansive-coders-dc-wgxc-dc/events/313894531) | [Gemini CLI Install Guide](gemini-install.md)
